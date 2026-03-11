@@ -1,164 +1,236 @@
-<img width="425" height="330" alt="image" src="https://github.com/user-attachments/assets/6f6cebde-ded6-4039-aaf6-e21dad71020b" />
-Application Not Running Error
-Problem: Spring Boot application not started.
-Error Example
+# Day 3 – Common Errors in Spring Boot CRUD (Notes)
+
+## 1. Application Not Running Error
+
+**Problem:**
+Spring Boot application not started.
+
+**Error Example**
+
+```
 Connection refused: localhost:8080
+```
 
-Reason
-Spring Boot server not running.
+**Reason**
 
-Solution
-Run PmsApplication.java
-Check console logs.
+* Spring Boot server not running.
 
-## 2 .Wrong URL Error
+**Solution**
 
-Problem: Incorrect API URL in Postman.
-Correct URL from your project:
+* Run `PmsApplication.java`
+* Check console logs.
+
+---
+
+## 2. Wrong URL Error
+
+**Problem:**
+Incorrect API URL in Postman.
+
+**Correct URL**
+
 ```
 http://localhost:8080/Product/addProduct
 ```
-Error Example   : 404 Not Found
 
-Reason
-Wrong endpoint
-Wrong mapping
+**Error Example**
 
-Check   :  @RequestMapping("/Product")     ,   @PostMapping("/addProduct")
+```
+404 Not Found
+```
 
-3️⃣ JSON Format Error
+**Reason**
 
-Problem: Wrong JSON format in Postman Body.
+* Wrong endpoint
+* Wrong mapping
 
-Correct format (from your document): 
+**Check**
 
-day 3
+```java
+@RequestMapping("/Product")
+@PostMapping("/addProduct")
+```
 
+---
+
+## 3. JSON Format Error
+
+**Problem:**
+Wrong JSON format in Postman Body.
+
+**Correct Format**
+
+```json
 [
- {
-   "Category":"hello",
-   "Description":"123",
-   "inStock":true,
-   "name":"Laptop",
-   "price":55000,
-   "stockQuantity":10
- }
+  {
+    "Category": "hello",
+    "Description": "123",
+    "inStock": true,
+    "name": "Laptop",
+    "price": 55000,
+    "stockQuantity": 10
+  }
 ]
+```
 
-Error Example
+**Error Example**
 
+```
 400 Bad Request
+```
 
-Reason
+**Reason**
 
-Missing brackets
+* Missing brackets
+* Wrong key names
 
-Wrong key names
+---
 
-4️⃣ Field Name Mismatch Error
+## 4. Field Name Mismatch Error
 
-Problem: JSON field names not matching Product.java fields
+**Problem:**
+JSON field names not matching `Product.java` fields.
 
-Example mismatch:
+**Example Mismatch**
 
+```
 JSON → Category
 Java → category
+```
 
-Error
+**Error**
 
+```
 HttpMessageNotReadableException
+```
 
-Solution
-Make sure names match.
+**Solution**
 
-5️⃣ Database Connection Error
+* Ensure JSON keys match Java entity fields.
 
-Error Example
+---
 
+## 5. Database Connection Error
+
+**Error Example**
+
+```
 Cannot connect to database
+```
 
-Reason
+**Reason**
 
-MySQL not running
+* MySQL not running
+* Wrong username/password
 
-Wrong username/password
+**Check Configuration**
 
-Check
-
+```
 spring.datasource.url
 spring.datasource.username
 spring.datasource.password
-6️⃣ Table Not Found Error
+```
 
-Error Example
+---
 
+## 6. Table Not Found Error
+
+**Error Example**
+
+```
 Table 'Product' doesn't exist
+```
 
-Reason
+**Reason**
 
-Table not created
+* Table not created
+* Wrong database selected
 
-Wrong database selected
+**Run in MySQL**
 
-From your document you must run: 
-
-day 3
-
+```sql
 use ProductManagementSystem;
 select * from Product;
-7️⃣ Repository Bean Error
+```
 
-Error Example
+---
 
+## 7. Repository Bean Error
+
+**Error Example**
+
+```
 No qualifying bean of type ProductRepository
+```
 
-Reason
+**Reason**
 
-Repository not extending JpaRepository
+* Repository not extending `JpaRepository`.
 
-Example correct:
+**Correct Example**
 
-public interface ProductRepository 
-       extends JpaRepository<Product, Integer>
-8️⃣ Dependency Injection Error
+```java
+public interface ProductRepository
+        extends JpaRepository<Product, Integer>
+```
 
-If @Autowired not working.
+---
 
-Example
+## 8. Dependency Injection Error
 
+If `@Autowired` not working.
+
+**Error Example**
+
+```
 NullPointerException
+```
 
-Reason
+**Reason**
 
+```
 ProductService service = null
+```
 
-Check annotations:
+**Check Annotations**
 
+```java
 @RestController
 @Service
 @Repository
 @Autowired
-9️⃣ HTTP Method Error
+```
 
-If using wrong method.
+---
 
-Example
+## 9. HTTP Method Error
 
+If using the wrong HTTP method.
+
+**Error Example**
+
+```
 405 Method Not Allowed
+```
 
-Reason
+**Reason**
 
-You used GET instead of POST
+* Using **GET instead of POST**
 
-Correct:
+**Correct**
 
+```
 POST /Product/addProduct
-🔟 Data Not Inserting in Database
+```
 
-Possible reasons
+---
 
-Entity mapping wrong
+## 10. Data Not Inserting in Database
 
-Database not connected
+**Possible Reasons**
 
-Transaction error
+* Entity mapping wrong
+* Database not connected
+* Transaction error
+
+---
